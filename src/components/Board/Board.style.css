@@ -20,6 +20,11 @@
     margin-top: 1em;
     filter: invert(50%);
     cursor: pointer;
+    transition: all .2s ease;
+}
+
+.board-header img:hover {
+    transform: rotate(90deg);
 }
 
 .first {
@@ -66,7 +71,7 @@
     text-align: center;
     width: 25em;
     display: grid;
-    grid-template-rows: 3em 3em 5em 3em;
+    grid-template-rows: 3em 3em 5em 5em 1.7em;
 }
 
 .modal-content input, textarea {
@@ -81,6 +86,10 @@
 }
 
 .modal-content button {
-    margin: .2em;
+    margin: 1em .2em 0em .2em;
     cursor: pointer;
+}
+
+.info-text {
+    color: red;
 }

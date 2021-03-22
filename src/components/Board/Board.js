@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import "./Board.style.css";
 import more from "../../images/menu.svg";
 import ToodoItem from "../TodoItem/TodoItem";
-import add from "../../images/add.svg";
+import add_icon from "../../images/plus.svg";
 
 Modal.setAppElement("#root");
 
@@ -38,8 +38,33 @@ const Board = ({ data }) => {
         console.log("edit");
     }
 
-    const add = (item) => {
-
+    const add = () => {
+        if (!title.trim() || !desc.trim()) {
+            setError("Empty field");
+        } else {
+            let copy = allData;
+            
+            let found = false;
+            allData.map((item) => {
+                if(item.title === title) {
+                    found = true;
+                }
+            });
+            if (!found) {
+                setError("");
+                copy.push({
+                    title: title,
+                    state: 0,
+                    description: desc
+                })
+                setAllData(copy);
+                setTitle("");
+                setDesc("");
+                closeModal(); 
+            } else {
+                setError("Title Exists");
+            }
+        }
     }
 
     const rendreItems = (state) => {
@@ -50,6 +75,10 @@ const Board = ({ data }) => {
 
     //Modal Code
     const [modalIsOpen,setIsOpen] = React.useState(false);
+    const [title, setTitle] = React.useState("");
+    const [desc, setDesc] = React.useState("");
+    const [error, setError] = React.useState("");
+
     function openModal() {
         setIsOpen(true);
     }
@@ -72,7 +101,7 @@ const Board = ({ data }) => {
     return (
         <div className="board">
             <div className="board-header">
-                <img src={add} alt="add icon" onClick={openModal} />
+                <img src={add_icon} alt="add icon" onClick={openModal} />
                 <Modal
                     isOpen={modalIsOpen}
                     onRequestClose={closeModal}
@@ -81,12 +110,10 @@ const Board = ({ data }) => {
                 >
                     <div className="modal-content">
                         <p>Add Task</p>
-                        <input type="text" placeholder="Title" />
-                        <textarea type="text" placeholder="Description" />
-                        <button onClick={() => {
-                            add();
-                            closeModal();
-                        }}>Add</button>
+                        <input type="text" placeholder="Title" value={title} onChange={event => setTitle(event.target.value)} />
+                        <textarea type="text" placeholder="Description" value={desc} onChange={event => setDesc(event.target.value)} />
+                        <button onClick={add} >Add</button>
+                        <p className="info-text">{error}</p>
                     </div>
                 </Modal>
             </div>
