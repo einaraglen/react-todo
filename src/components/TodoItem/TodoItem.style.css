@@ -1,0 +1,61 @@
+.item {
+    height: 8em;
+    width: 100%;
+    background-color: #E5E7E9;
+    margin: .5em 0em .5em 0em;
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.2);
+    padding: 0em .5vw 0em .5vw;
+    display: grid;
+    grid-template-columns: 75% 25%;
+    grid-template-rows: 3em 3em 2em;
+    grid-template-areas: 
+        "title status"
+        "desc desc"
+        ". tools";
+}
+
+.title {
+    grid-area: title;
+}
+
+.status {
+    grid-area: status;
+    font-size: .8em;
+    text-align: center;
+    margin: auto;
+}
+
+.description {
+    grid-area: desc;
+    font-size: .8em;
+}
+
+.tools {
+    grid-area: tools;
+}
+
+.tools img {
+    height: 1em;
+    filter: invert(60%);
+}
+
+.proceed-button {
+    width: 5em;
+    float: left;
+    cursor: pointer;
+}
+
+.proceed-button p {
+    float: left;
+    margin: 0;
+}
+
+.proceed-button img {
+    float: right;
+    margin-top: .2em;
+}
+
+.edit-button {
+    float: right;
+    cursor: pointer;
+}
