@@ -31,7 +31,7 @@ const App = () => {
       state: 1,
       description: "Make App"
     },
-]
+  ]
 
   return (
     <Router className="router">

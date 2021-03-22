@@ -2,7 +2,7 @@ import "./TodoItem.style.css";
 import proceed from "../../images/proceed.svg";
 import edit from "../../images/edit.svg";
 
-const ToodoItem = ({ info, key, handler }) => {
+const ToodoItem = ({ info, handler }) => {
 
     const states = ["Todo", "Doing", "Done"];
 
@@ -12,11 +12,21 @@ const ToodoItem = ({ info, key, handler }) => {
             <p className="status">{states[info.state]}</p>
             <p className="description">{info.description}</p>
             <div className="tools">
-                <div className="proceed-button">
-                    <p>Proceed</p>
-                    <img src={proceed} alt="proceed icom" />
+                <div className="holder">
+                    {
+                        /* Cannot proceede if task is done, there for retrun null */
+                        (info.state !== 2) ? 
+                        <div className="proceed-button" onClick={() => handler("proceed", info)}>
+                            <p>Proceed</p>
+                            <img src={proceed} alt="proceed icom" />
+                        </div> : null
+                    }
+                    <img 
+                        className="edit-button" 
+                        src={edit} alt="edit icon" 
+                        onClick={() => handler("edit", info)} 
+                    />
                 </div>
-                <img className="edit-button" src={edit} alt="edit icon" />
             </div>
         </div>
     )

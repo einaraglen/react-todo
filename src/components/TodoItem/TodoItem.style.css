@@ -11,7 +11,7 @@
     grid-template-areas: 
         "title status"
         "desc desc"
-        ". tools";
+        "tools tools";
 }
 
 .title {
@@ -32,11 +32,18 @@
 
 .tools {
     grid-area: tools;
+    width: 100%;
+}
+
+.holder {
+    float: right;
+    width: 8em;
 }
 
 .tools img {
     height: 1em;
     filter: invert(60%);
+    transition: all .2s ease;
 }
 
 .proceed-button {
@@ -55,7 +62,16 @@
     margin-top: .2em;
 }
 
+.proceed-button:hover img {
+    filter: invert(80%);
+}
+
 .edit-button {
     float: right;
     cursor: pointer;
+    margin-top: .2em;
+}
+
+.edit-button:hover {
+    filter: invert(80%);
 }
