@@ -8,17 +8,49 @@ import add_icon from "../../images/plus.svg";
 
 Modal.setAppElement("#root");
 
-const Board = ({ data }) => {
+const Board = ({ data, setValue }) => {
 
-    //Rendre items code
-    const[allData, setAllData] = React.useState(data);
+    let copy = data;
 
-    const handler = (type, info) => {
-        (type === "proceed") ? proceed(info) : openEdit(info);
+    const [allData, setAllData] = React.useState(data);
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalState, setModalState] = React.useState(0);
+
+    //saves the key when edit is open so that we can update title which acts as key
+    const [key, setKey] = React.useState("");
+
+    const [title, setTitle] = React.useState("");
+    const [desc, setDesc] = React.useState("");
+    const [error, setError] = React.useState("");
+
+    React.useEffect(() => console.log("updated"));
+
+    const customStyles = {
+        content : {
+            top: '40%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            border: 'none',
+            background: '#ECF0F1',
+            overflow: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            borderRadius: '4px',
+            outline: 'none',
+            padding: '20px',
+            boxShadow: '0px 3px 10px rgba(0,0,0,0.2)'
+        },
+        overlay: {
+            //workaround: modal was not covering header
+            zIndex: 4,
+            backgroundColor: 'rgba(0, 0, 0, 0.45)'
+        }
     }
 
-    const proceed = (info) => {
-        const newList = allData.map((item) => {
+    function proceed(info) {
+        copy = allData.map((item) => {
           if (item.title === info.title) {
             const updatedItem = {
               ...item,
@@ -30,31 +62,15 @@ const Board = ({ data }) => {
      
           return item;
         });
-     
-        setAllData(newList);
+        setAllData(copy);
     }
-
-    const openEdit = (info) => {
-        setModalState(1);
-        openModal();
-        setTitle(info.title);
-        setDesc(info.description);
-        setKey(info.title);
-    }
-
-    const add = () => {
+    
+    function add() {
         if (!title.trim() || !desc.trim()) {
             setError("Empty field");
         } else {
-            let copy = allData;
-            
-            let found = false;
-            allData.forEach((item) => {
-                if(item.title === title) {
-                    found = true;
-                }
-            });
-            if (!found) {
+            if (!used(title)) {
+                copy = allData;
                 copy.push({
                     title: title,
                     state: 0,
@@ -63,40 +79,54 @@ const Board = ({ data }) => {
                 setAllData(copy);
                 closeModal(); 
             } else {
-                setError("Title Exists");
+                setError("Title unavailable");
             }
         }
     }
 
-    const edit = () => {
+    function edit() {
         if (!title.trim() || !desc.trim()) {
             setError("Empty field");
         } else {
-            let copy = allData;
-            let index = copy.findIndex((item => item.title === key));
-            copy[index].title = title;
-            copy[index].description = desc; 
-            setAllData(copy);
-            closeModal();
+            if(used(title) && title !== key) {
+                setError("Title unavailable");
+            } else {
+                copy = allData;
+                let index = copy.findIndex((item => item.title === key));
+                copy[index].title = title;
+                copy[index].description = desc; 
+                setAllData(copy);
+                closeModal();
+            }
         }
     }
 
-    const rendreItems = (state) => {
+    function openEdit(info) {
+        setModalState(1);
+        openModal();
+        setTitle(info.title);
+        setDesc(info.description);
+        setKey(info.title);
+    }
+
+    function used(key) {
+        let found = false;
+        allData.forEach((item) => {
+            if(item.title === title) {
+                found = true;
+            }
+        });
+
+        return found;
+    }
+
+    function rendreItems(state) {
         return allData
             .filter(item => item.state === state)
-            .map((item) => <ToodoItem key={item.title} info={item} handler={handler}/>)
+            .map((item) => <ToodoItem key={item.title} info={item} handler={
+                (type, info) => (type === "proceed") ? proceed(info) : openEdit(info)
+            }/>)
     } 
-
-    //Modal Code
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [modalState, setModalState] = React.useState(0);
-
-    //saves the key when edit is open so that we can update title which acts as key
-    const [key, setKey] = React.useState("");
-
-    const [title, setTitle] = React.useState("");
-    const [desc, setDesc] = React.useState("");
-    const [error, setError] = React.useState("");
 
     function openModal() {
         setIsOpen(true);
@@ -108,18 +138,6 @@ const Board = ({ data }) => {
         setDesc("");
         setIsOpen(false);
         setModalState(0);
-    }
-
-    const customStyles = {
-        content : {
-            top: '40%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)'
-        },
-        overlay: {zIndex: 4}
     }
 
     return (

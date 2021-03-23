@@ -1,0 +1,15 @@
+.about-content {
+    padding: 7em 1vw 5em 1vw;
+    width: 50vw;
+    margin: auto;
+    background-color: #ECF0F1;
+    border-radius: .3em;
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.1);
+    color: #424949;
+  }
+
+  @media only screen and (max-width: 1200px) {
+    .about-content {
+      width: 80vw;
+    }
+}
