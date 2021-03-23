@@ -14,7 +14,7 @@ const Board = ({ data }) => {
     const[allData, setAllData] = React.useState(data);
 
     const handler = (type, info) => {
-        (type === "proceed") ? proceed(info) : edit(info);
+        (type === "proceed") ? proceed(info) : openEdit(info);
     }
 
     const proceed = (info) => {
@@ -32,10 +32,14 @@ const Board = ({ data }) => {
         });
      
         setAllData(newList);
-      }
+    }
 
-    const edit = (info) => {
-        console.log("edit");
+    const openEdit = (info) => {
+        setModalState(1);
+        openModal();
+        setTitle(info.title);
+        setDesc(info.description);
+        setKey(info.title);
     }
 
     const add = () => {
@@ -45,25 +49,35 @@ const Board = ({ data }) => {
             let copy = allData;
             
             let found = false;
-            allData.map((item) => {
+            allData.forEach((item) => {
                 if(item.title === title) {
                     found = true;
                 }
             });
             if (!found) {
-                setError("");
                 copy.push({
                     title: title,
                     state: 0,
                     description: desc
                 })
                 setAllData(copy);
-                setTitle("");
-                setDesc("");
                 closeModal(); 
             } else {
                 setError("Title Exists");
             }
+        }
+    }
+
+    const edit = () => {
+        if (!title.trim() || !desc.trim()) {
+            setError("Empty field");
+        } else {
+            let copy = allData;
+            let index = copy.findIndex((item => item.title === key));
+            copy[index].title = title;
+            copy[index].description = desc; 
+            setAllData(copy);
+            closeModal();
         }
     }
 
@@ -74,7 +88,12 @@ const Board = ({ data }) => {
     } 
 
     //Modal Code
-    const [modalIsOpen,setIsOpen] = React.useState(false);
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalState, setModalState] = React.useState(0);
+
+    //saves the key when edit is open so that we can update title which acts as key
+    const [key, setKey] = React.useState("");
+
     const [title, setTitle] = React.useState("");
     const [desc, setDesc] = React.useState("");
     const [error, setError] = React.useState("");
@@ -84,18 +103,23 @@ const Board = ({ data }) => {
     }
     
     function closeModal(){
+        setError("");
+        setTitle("");
+        setDesc("");
         setIsOpen(false);
+        setModalState(0);
     }
 
     const customStyles = {
         content : {
-            top                   : '40%',
-            left                  : '50%',
-            right                 : 'auto',
-            bottom                : 'auto',
-            marginRight           : '-50%',
-            transform             : 'translate(-50%, -50%)'
-        }
+            top: '40%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)'
+        },
+        overlay: {zIndex: 4}
     }
 
     return (
@@ -109,10 +133,13 @@ const Board = ({ data }) => {
                     contentLabel="Example Modal"
                 >
                     <div className="modal-content">
-                        <p>Add Task</p>
+                        <p>{(modalState === 0) ? "Add " : "Edit "}Task</p>
                         <input type="text" placeholder="Title" value={title} onChange={event => setTitle(event.target.value)} />
                         <textarea type="text" placeholder="Description" value={desc} onChange={event => setDesc(event.target.value)} />
-                        <button onClick={add} >Add</button>
+                        {
+                            (modalState === 0) ? null : (null)
+                        }
+                        <button onClick={(modalState === 0) ? add : edit} >{(modalState === 0) ? "Add" : "Edit"}</button>
                         <p className="info-text">{error}</p>
                     </div>
                 </Modal>

@@ -10,7 +10,7 @@ svg {
   height: 5em;
   width: 100%;
   position: fixed;
-  z-index: 0;
+  z-index: 1;
   background: rgb(2,0,36);
   background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(40,55,71,1) 0%, rgba(93,109,126,1) 100%);
   display: grid;
