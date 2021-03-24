@@ -1,8 +1,11 @@
 import React from "react";
 import Modal from 'react-modal';
 
+import Radio from '@material-ui/core/Radio';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import "./Board.style.css";
-import more from "../../images/menu.svg";
 import ToodoItem from "../TodoItem/TodoItem";
 import add_icon from "../../images/plus.svg";
 
@@ -14,7 +17,7 @@ const Board = ({ data, updateData }) => {
 
     const [allData, setAllData] = React.useState(data);
     const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [modalState, setModalState] = React.useState(0);
+    const [modalState, setModalState] = React.useState(true);
 
     //saves the key when edit is open so that we can update title which acts as key
     const [key, setKey] = React.useState("");
@@ -22,6 +25,8 @@ const Board = ({ data, updateData }) => {
     const [title, setTitle] = React.useState("");
     const [desc, setDesc] = React.useState("");
     const [error, setError] = React.useState("");
+
+    const [selectedValue, setSelectedValue] = React.useState(0);
 
     const customStyles = {
         content : {
@@ -64,7 +69,7 @@ const Board = ({ data, updateData }) => {
         setAllData(copy);
     }
 
-    function add() {
+    function addItem() {
         if (!title.trim() || !desc.trim()) {
             setError("Empty field");
         } else {
@@ -84,7 +89,7 @@ const Board = ({ data, updateData }) => {
         }
     }
 
-    function edit() {
+    function editItem() {
         if (!title.trim() || !desc.trim()) {
             setError("Empty field");
         } else {
@@ -96,6 +101,7 @@ const Board = ({ data, updateData }) => {
                       const updatedItem = {
                         ...item,
                         title: title,
+                        state: selectedValue,
                         description: desc
                       };
                
@@ -111,12 +117,26 @@ const Board = ({ data, updateData }) => {
         }
     }
 
+    function handleRadio(event) {
+        setSelectedValue(parseInt(event.target.value))
+    }
+
+    //We straight up filter out the item with same key(title) as item we want deleted
+    //and store this filtred array as our new render array.
+    function deleteItem() {
+        copy = allData.filter(item => item.title !== key);
+        updateData(copy);
+        setAllData(copy);
+        closeModal();
+    }
+
     function openEdit(info) {
-        setModalState(1);
+        setModalState(false);
         openModal();
         setTitle(info.title);
         setDesc(info.description);
         setKey(info.title);
+        setSelectedValue(info.state);
     }
 
     function used(key) {
@@ -147,13 +167,15 @@ const Board = ({ data, updateData }) => {
         setTitle("");
         setDesc("");
         setIsOpen(false);
-        setModalState(0);
+        setModalState(true);
     }
 
     return (
         <div className="board">
             <div className="board-header">
-                <img src={add_icon} alt="add icon" onClick={openModal} />
+                <Tooltip title="Add" placement="right">
+                    <img src={add_icon} alt="add icon" onClick={openModal} />
+                </Tooltip>
                 <Modal
                     isOpen={modalIsOpen}
                     onRequestClose={closeModal}
@@ -161,13 +183,34 @@ const Board = ({ data, updateData }) => {
                     contentLabel="Example Modal"
                 >
                     <div className="modal-content">
-                        <p>{(modalState === 0) ? "Add " : "Edit "}Task</p>
+                        <p>{(modalState) ? "Add " : "Edit "}Task</p>
                         <input type="text" placeholder="Title" value={title} onChange={event => setTitle(event.target.value)} />
                         <textarea type="text" placeholder="Description" value={desc} onChange={event => setDesc(event.target.value)} />
                         {
-                            (modalState === 0) ? null : (null)
+                            (modalState) ? null : (
+                                <div>
+                                    <FormControlLabel
+                                            control={<Radio value="0" onChange={handleRadio} checked={selectedValue === 0} color="default" />}
+                                            label="Todo"
+                                            labelPlacement="top"
+                                        />
+                                        <FormControlLabel
+                                            control={<Radio value="1" onChange={handleRadio} checked={selectedValue === 1}  color="default" />}
+                                            label="In-Progress"
+                                            labelPlacement="top"
+                                        />
+                                        <FormControlLabel
+                                            control={<Radio value="2" onChange={handleRadio} checked={selectedValue === 2}  color="default" />}
+                                            label="Done"
+                                            labelPlacement="top"
+                                        />
+                                </div>
+                            )
                         }
-                        <button onClick={(modalState === 0) ? add : edit} >{(modalState === 0) ? "Add" : "Edit"}</button>
+                        <div className="buttons">
+                            <button className="first-button" onClick={(modalState) ? addItem : editItem} >{(modalState) ? "Add" : "Edit"}</button>
+                            <button className={(modalState) ? "back" : "delete"} onClick={(modalState) ? closeModal : deleteItem}>{(modalState) ? "Back" : "Delete"}</button>
+                        </div>
                         <p className="info-text">{error}</p>
                     </div>
                 </Modal>
@@ -176,7 +219,7 @@ const Board = ({ data, updateData }) => {
                 <div className="flex">
                     <div className="column-header">
                         <p>Todo</p>
-                        <img src={more} alt="more icon" />
+                        {/*<img src={more} alt="more icon"*/}
                     </div>
                     {/* Prints all todo items from data list state 0 */}
                     {rendreItems(0)}
@@ -186,7 +229,7 @@ const Board = ({ data, updateData }) => {
                 <div className="flex">
                     <div className="column-header">
                         <p>In-Progress</p>
-                        <img src={more} alt="more icon" />
+                        {/*<img src={more} alt="more icon"*/}
                     </div>
                     {/* Prints all todo items from data list state 1 */}
                     {rendreItems(1)}
@@ -196,7 +239,7 @@ const Board = ({ data, updateData }) => {
                 <div className="flex">
                     <div className="column-header">
                         <p>Done</p>
-                        <img src={more} alt="more icon" />
+                        {/*<img src={more} alt="more icon"*/}
                     </div>
                     {/* Prints all todo items from data list state 2 */}
                     {rendreItems(2)}

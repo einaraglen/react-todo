@@ -23,9 +23,9 @@
     transition: all .2s ease;
 }
 
-.board-header img:hover {
+/*.board-header img:hover {
     transform: rotate(90deg);
-}
+}*/
 
 .first {
     grid-area: todo;
@@ -60,18 +60,19 @@
 }
 
 .column-header img {
-    height: 2em;
+    height: 1.6em;
     filter: invert(60%);
     float: right;
-    margin-top: .8em;
+    margin-top: 1em;
     z-index: 0;
+    cursor: pointer;
 }
 
 .modal-content {
     text-align: center;
     width: 25em;
+    height: auto;
     display: grid;
-    grid-template-rows: 3em 3em 5em 5em 1.7em;
 }
 
 .modal-content input, textarea {
@@ -83,26 +84,66 @@
     border: none;
     box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
     margin: .2em;
+    padding: .2em;
+}
+
+.modal-content input {
+    height: 3em;
+}
+
+.modal-content textarea {
+    height: 5em;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 50% 50%;
 }
 
 .modal-content button {
+    height: 3em;
     margin: 1em .2em 0em .2em;
     cursor: pointer;
     background-color: #ECF0F1;
     border-radius: .4em;
-    border: .2em solid rgba(40,55,71,1);
-    color: rgba(40,55,71,1);
     font-weight: 400;
     font-size: 1em;
     transition: all .2s ease;
     box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
+    float: left;
 }
 
-.modal-content button:hover {
+.first-button {
+    border: .2em solid rgba(40,55,71,1);
+    color: rgba(40,55,71,1);
+}
+
+.first-button:hover {
     background-color: rgba(40,55,71,1);
     color: #ECF0F1;
 }
 
+.delete {
+    border: .2em solid #CB4335;
+    color: #CB4335;
+}
+
+.delete:hover {
+    background-color: #CB4335;
+    color: #ECF0F1;
+}
+
 .info-text {
-    color: red;
+    height: 1em;
+    color: #E74C3C;
+}
+
+.back {
+    border: .2em solid #909497;
+    color: #909497;
+}
+
+.back:hover {
+    background-color: #909497;
+    color: #ECF0F1;
 }
