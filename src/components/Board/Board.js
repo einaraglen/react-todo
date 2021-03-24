@@ -8,7 +8,7 @@ import add_icon from "../../images/plus.svg";
 
 Modal.setAppElement("#root");
 
-const Board = ({ data, setValue }) => {
+const Board = ({ data, updateData }) => {
 
     let copy = data;
 
@@ -22,8 +22,6 @@ const Board = ({ data, setValue }) => {
     const [title, setTitle] = React.useState("");
     const [desc, setDesc] = React.useState("");
     const [error, setError] = React.useState("");
-
-    React.useEffect(() => console.log("updated"));
 
     const customStyles = {
         content : {
@@ -62,20 +60,22 @@ const Board = ({ data, setValue }) => {
      
           return item;
         });
+        updateData(copy);
         setAllData(copy);
     }
-    
+
     function add() {
         if (!title.trim() || !desc.trim()) {
             setError("Empty field");
         } else {
             if (!used(title)) {
-                copy = allData;
+                copy = allData.map(item => item);
                 copy.push({
                     title: title,
                     state: 0,
                     description: desc
                 })
+                updateData(copy);
                 setAllData(copy);
                 closeModal(); 
             } else {
@@ -91,10 +91,20 @@ const Board = ({ data, setValue }) => {
             if(used(title) && title !== key) {
                 setError("Title unavailable");
             } else {
-                copy = allData;
-                let index = copy.findIndex((item => item.title === key));
-                copy[index].title = title;
-                copy[index].description = desc; 
+                copy = allData.map((item) => {
+                    if (item.title === key) {
+                      const updatedItem = {
+                        ...item,
+                        title: title,
+                        description: desc
+                      };
+               
+                      return updatedItem;
+                    }
+               
+                    return item;
+                });
+                updateData(copy);
                 setAllData(copy);
                 closeModal();
             }

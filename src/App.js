@@ -58,7 +58,7 @@ const App = () => {
       <div className="main">
             <Switch>
               <Route exact path="/">
-                <Board data={value} setValue={setValue} />
+                <Board data={value} updateData={(data) => setValue(data)} />
               </Route>
               <Route path="/about">
                 <About />
