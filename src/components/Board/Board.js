@@ -208,7 +208,7 @@ const Board = ({ data, updateData }) => {
                             )
                         }
                         <div className="buttons">
-                            <button className="first-button" onClick={(modalState) ? addItem : editItem} >{(modalState) ? "Add" : "Edit"}</button>
+                            <button className="first-button" onClick={(modalState) ? addItem : editItem} >{(modalState) ? "Add" : "Save Changes"}</button>
                             <button className={(modalState) ? "back" : "delete"} onClick={(modalState) ? closeModal : deleteItem}>{(modalState) ? "Back" : "Delete"}</button>
                         </div>
                         <p className="info-text">{error}</p>

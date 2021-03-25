@@ -17,7 +17,7 @@ const ToodoItem = ({ info, handler }) => {
                         /* Cannot proceede if task is done, there for retrun null */
                         (info.state !== 2) ? 
                         <div className="proceed-button" onClick={() => handler("proceed", info)}>
-                            <p>Proceed</p>
+                            <p>{(info.state === 0) ? "Start" : "Finish"}</p>
                             <img src={proceed} alt="proceed icom" />
                         </div> : null
                     }
