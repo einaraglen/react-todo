@@ -13,10 +13,13 @@ import settings from "./images/gear.svg";
 import Board from "./components/Board/Board";
 import About from "./components/About/About";
 
+import Store, { Context } from "./Store";
+
 //Kinda serializes your data, so that it persists between refreshes
 //Uses JSON parsing so we can get back the object list we sendt into it
 //And ofc we give it an empty array if no session data is found (this helps to not break absolutly erything)
 function useStateWithLocalStorage(localStorageKey) {
+
   const [value, setValue] = React.useState(
     (localStorage.length !== 0) ? JSON.parse(localStorage.getItem(localStorageKey)) : []
   );
@@ -33,7 +36,8 @@ const App = () => {
   const [value, setValue] = useStateWithLocalStorage("data");
  
   return (
-    <Router className="router">
+    <Store>
+      <Router className="router">
       <div className="header">
               <Link className="link home" to="/">
                 <div>
@@ -72,6 +76,7 @@ const App = () => {
             </Switch>
       </div>
     </Router>
+    </Store>
   )
 }
 

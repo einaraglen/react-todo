@@ -150,6 +150,24 @@ const Board = ({ data, updateData }) => {
         return found;
     }
 
+    function rendreBoards() {
+        let states = [0, 1, 2];
+        let classNames = ["first", "mid", "last"];
+        let titles = ["Todo", "In-Progress", "Done"]
+        return states.map(
+            state => <div key={state} className={classNames[state]}>
+                        <div className="flex">
+                            <div className="column-header">
+                                <p>{titles[state]}</p>
+                                {/*<img src={more} alt="more icon"*/}
+                            </div>
+                            {/* Prints all todo items from data list state */}
+                            {rendreItems(state)}
+                        </div>
+                    </div>
+        );
+    }
+
     function rendreItems(state) {
         return allData
             .filter(item => item.state === state)
@@ -215,36 +233,8 @@ const Board = ({ data, updateData }) => {
                     </div>
                 </Modal>
             </div>
-            <div className="first">
-                <div className="flex">
-                    <div className="column-header">
-                        <p>Todo</p>
-                        {/*<img src={more} alt="more icon"*/}
-                    </div>
-                    {/* Prints all todo items from data list state 0 */}
-                    {rendreItems(0)}
-                </div>
-            </div>
-            <div className="mid">
-                <div className="flex">
-                    <div className="column-header">
-                        <p>In-Progress</p>
-                        {/*<img src={more} alt="more icon"*/}
-                    </div>
-                    {/* Prints all todo items from data list state 1 */}
-                    {rendreItems(1)}
-                </div>
-            </div>
-            <div className="last">
-                <div className="flex">
-                    <div className="column-header">
-                        <p>Done</p>
-                        {/*<img src={more} alt="more icon"*/}
-                    </div>
-                    {/* Prints all todo items from data list state 2 */}
-                    {rendreItems(2)}
-                </div>
-            </div>
+            {/* All rendering of boards and items is done here */}
+           {rendreBoards()}
         </div>
     )
 }
