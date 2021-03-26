@@ -9,13 +9,38 @@ import "./Board.style.css";
 import ToodoItem from "../TodoItem/TodoItem";
 import add_icon from "../../images/plus.svg";
 
+import { Context } from "../../Store";
+
 Modal.setAppElement("#root");
 
-const Board = ({ data, updateData }) => {
+//Kinda serializes your data, so that it persists between refreshes
+//Uses JSON parsing so we can get back the object list we sendt into it
+//And ofc we give it an empty array if no session data is found (this helps to not break absolutly erything)
+const useStateWithLocalStorage = (localStorageKey) => {
+
+    const [data, setData] = React.useState(
+      (localStorage.length !== 0) ? JSON.parse(localStorage.getItem(localStorageKey)) : []
+    );
+   
+    React.useEffect(() => {
+      localStorage.setItem(localStorageKey, JSON.stringify(data));
+    }, [localStorageKey, data]);
+   
+    return [data, setData];
+}
+
+const Board = () => {
+
+    const [data, setData] = useStateWithLocalStorage("data");
+
+    const [state, dispatch] = React.useContext(Context);
 
     let copy = data;
 
-    const [allData, setAllData] = React.useState(data);
+    React.useEffect(() => {
+        dispatch({type: "SET_DATA", payload: data});
+    }, [dispatch, data]);
+
     const [modalIsOpen, setIsOpen] = React.useState(false);
     const [modalState, setModalState] = React.useState(true);
 
@@ -23,7 +48,7 @@ const Board = ({ data, updateData }) => {
     const [key, setKey] = React.useState("");
 
     const [title, setTitle] = React.useState("");
-    const [desc, setDesc] = React.useState("");
+    const [description, setDescription] = React.useState("");
     const [error, setError] = React.useState("");
 
     const [selectedValue, setSelectedValue] = React.useState(0);
@@ -53,35 +78,32 @@ const Board = ({ data, updateData }) => {
     }
 
     function proceed(info) {
-        copy = allData.map((item) => {
-          if (item.title === info.title) {
-            const updatedItem = {
-              ...item,
-              state: item.state + 1,
-            };
-     
-            return updatedItem;
-          }
-     
-          return item;
-        });
-        updateData(copy);
-        setAllData(copy);
+        setData(state.data.map((item) => {
+            if (item.title === info.title) {
+              const updatedItem = {
+                ...item,
+                state: item.state + 1,
+              };
+       
+              return updatedItem;
+            }
+       
+            return item;
+          }));
     }
 
     function addItem() {
-        if (!title.trim() || !desc.trim()) {
+        if (!title.trim() || !description.trim()) {
             setError("Empty field");
         } else {
             if (!used(title)) {
-                copy = allData.map(item => item);
+                copy = [...state.data];
                 copy.push({
                     title: title,
                     state: 0,
-                    description: desc
+                    description: description
                 })
-                updateData(copy);
-                setAllData(copy);
+                setData(copy);
                 closeModal(); 
             } else {
                 setError("Title unavailable");
@@ -90,58 +112,54 @@ const Board = ({ data, updateData }) => {
     }
 
     function editItem() {
-        if (!title.trim() || !desc.trim()) {
+        if (!title.trim() || !description.trim()) {
             setError("Empty field");
         } else {
             if(used(title) && title !== key) {
                 setError("Title unavailable");
             } else {
-                copy = allData.map((item) => {
+                setData(state.data.map((item) => {
                     if (item.title === key) {
                       const updatedItem = {
                         ...item,
                         title: title,
                         state: selectedValue,
-                        description: desc
+                        description: description
                       };
                
                       return updatedItem;
                     }
                
                     return item;
-                });
-                updateData(copy);
-                setAllData(copy);
+                }));
                 closeModal();
             }
         }
+    }
+
+    //We straight up filter out the item with same key(title) as item we want deleted
+    //and store this filtred array as our new render array.
+    function deleteItem() {
+        setData(state.data.filter(item => item.title !== key));
+        closeModal();
     }
 
     function handleRadio(event) {
         setSelectedValue(parseInt(event.target.value))
     }
 
-    //We straight up filter out the item with same key(title) as item we want deleted
-    //and store this filtred array as our new render array.
-    function deleteItem() {
-        copy = allData.filter(item => item.title !== key);
-        updateData(copy);
-        setAllData(copy);
-        closeModal();
-    }
-
     function openEdit(info) {
         setModalState(false);
         openModal();
         setTitle(info.title);
-        setDesc(info.description);
+        setDescription(info.description);
         setKey(info.title);
         setSelectedValue(info.state);
     }
 
     function used(key) {
         let found = false;
-        allData.forEach((item) => {
+        state.data.forEach((item) => {
             if(item.title === title) {
                 found = true;
             }
@@ -168,9 +186,9 @@ const Board = ({ data, updateData }) => {
         );
     }
 
-    function rendreItems(state) {
-        return allData
-            .filter(item => item.state === state)
+    function rendreItems(currentState) {
+        return state.data
+            .filter(item => item.state === currentState)
             .map((item) => <ToodoItem key={item.title} info={item} handler={
                 (type, info) => (type === "proceed") ? proceed(info) : openEdit(info)
             }/>)
@@ -183,7 +201,7 @@ const Board = ({ data, updateData }) => {
     function closeModal(){
         setError("");
         setTitle("");
-        setDesc("");
+        setDescription("");
         setIsOpen(false);
         setModalState(true);
     }
@@ -203,7 +221,7 @@ const Board = ({ data, updateData }) => {
                     <div className="modal-content">
                         <p>{(modalState) ? "Add " : "Edit "}Task</p>
                         <input type="text" placeholder="Title" value={title} onChange={event => setTitle(event.target.value)} />
-                        <textarea type="text" placeholder="Description" value={desc} onChange={event => setDesc(event.target.value)} />
+                        <textarea type="text" placeholder="Description" value={description} onChange={event => setDescription(event.target.value)} />
                         {
                             (modalState) ? null : (
                                 <div>
