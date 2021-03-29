@@ -13,13 +13,10 @@ import settings from "./images/gear.svg";
 import Board from "./components/Board/Board";
 import About from "./components/About/About";
 
-import Store from "./context/Store";
-
 const App = () => {
 
   return (
-    <Store>
-      <Router className="router">
+    <Router className="router">
       <div className="header">
               <Link className="link home" to="/">
                 <div>
@@ -58,7 +55,6 @@ const App = () => {
             </Switch>
       </div>
     </Router>
-    </Store>
   )
 }
 
