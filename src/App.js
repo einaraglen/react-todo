@@ -13,7 +13,7 @@ import settings from "./images/gear.svg";
 import Board from "./components/Board/Board";
 import About from "./components/About/About";
 
-import Store from "./Store";
+import Store from "./context/Store";
 
 const App = () => {
 

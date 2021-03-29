@@ -9,7 +9,7 @@ import "./Board.style.css";
 import ToodoItem from "../TodoItem/TodoItem";
 import add_icon from "../../images/plus.svg";
 
-import { Context } from "../../Store";
+import { Context } from "../../context/Store";
 
 Modal.setAppElement("#root");
 
@@ -22,6 +22,7 @@ const useStateWithLocalStorage = (localStorageKey) => {
       (localStorage.length !== 0) ? JSON.parse(localStorage.getItem(localStorageKey)) : []
     );
    
+    //stores data list on re-render
     React.useEffect(() => {
       localStorage.setItem(localStorageKey, JSON.stringify(data));
     }, [localStorageKey, data]);
@@ -37,6 +38,7 @@ const Board = () => {
 
     let copy = data;
 
+    //re-saves the context / global-variable on re-rendre
     React.useEffect(() => {
         dispatch({type: "SET_DATA", payload: data});
     }, [dispatch, data]);
