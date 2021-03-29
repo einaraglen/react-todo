@@ -121,7 +121,7 @@ const BoardModal = ({ modalIsOpen , setIsOpen, modalState, setModalState, curren
         setDescription("");
         setIsOpen(false);
         setModalState(true);
-    }
+    } 
 
     return (
         <Modal

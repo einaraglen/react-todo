@@ -2,7 +2,7 @@
 const Reducer = (state, action) => {
 
     switch (action.type) {
-        //for setting data from session storage
+        //for setting the context
         case 'SET_DATA':
             return {
                 ...state,
