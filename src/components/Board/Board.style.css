@@ -1,13 +1,22 @@
 .board {
-    padding-top: 5em;
+    padding: 5em 0em 0em 2.5%;
     width: 100%;
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 30% 30% 30%;
+    grid-gap: 2.5%;
     grid-template-rows: 4em auto;
     grid-template-areas: 
         "header header header"
         "todo doing done";
 }
+
+@media only screen and (max-width: 1200px) {
+    .board {
+        padding: 5em 0em 0em 4%;
+        grid-template-columns: 28% 28% 28%;
+        grid-gap: 4%;
+    }
+  }
 
 .board-header {
     grid-area: header;
@@ -22,10 +31,6 @@
     cursor: pointer;
     transition: all .2s ease;
 }
-
-/*.board-header img:hover {
-    transform: rotate(90deg);
-}*/
 
 .first {
     grid-area: todo;
@@ -44,7 +49,7 @@
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
     align-content: flex-start;
-    margin: .5em 5% .5em 5%;
+    /*margin: .5em 5% .5em 5%;*/
     padding: .5em 1vw 1em 1vw;
     background-color: #ECF0F1;
     border-radius: .3em;
