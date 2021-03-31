@@ -1,5 +1,7 @@
 import React from "react";
 import Tooltip from '@material-ui/core/Tooltip';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 import "./Board.style.css";
 import ToodoItem from "../TodoItem/TodoItem";
@@ -10,11 +12,14 @@ import { Context } from "../../context/Store";
 
 const Board = () => {
 
+    //Gets the context (global variable and setter)
     const [state, dispatch] = React.useContext(Context);
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
     const [modalState, setModalState] = React.useState(true);
     const [currentItem, setCurrentItem] = React.useState({});
+
+    const [key, setKey] = React.useState("Work");
 
     function proceed(info) {
         dispatch({type: "SET_DATA", payload: state.data.map((item) => {
@@ -67,6 +72,10 @@ const Board = () => {
     function openModal() {
         setIsOpen(true);
     }
+
+    function handleChange(event) {
+        setKey(event.target.value);
+      }
     
     return (
         <div className="board">
@@ -74,6 +83,10 @@ const Board = () => {
                 <Tooltip title="Add" placement="right">
                     <img src={add_icon} alt="add icon" onClick={openModal} />
                 </Tooltip>
+                <Select className="select" value={key} onChange={handleChange} disableUnderline>
+                    <MenuItem value="10">Work</MenuItem>
+                    <MenuItem value="20">Home</MenuItem>
+                </Select>
                 <BoardModal 
                     modalIsOpen={modalIsOpen}
                     setIsOpen={setIsOpen}
