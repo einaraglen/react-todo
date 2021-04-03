@@ -7,12 +7,8 @@ import Reducer from "./Reducer";
 const useStateWithLocalStorage = (localStorageKey) => {
 
     const [data, setData] = React.useState(
-      (localStorage.length !== 0) ? JSON.parse(localStorage.getItem(localStorageKey)) : [{
-          title: "TEST",
-          state: 0,
-          description: "TEST"
-      }]
-    );
+      (localStorage.length !== 0) ? JSON.parse(localStorage.getItem(localStorageKey)) : []
+    )
    
     //stores data on change of data
     React.useEffect(() => {
@@ -24,7 +20,7 @@ const useStateWithLocalStorage = (localStorageKey) => {
 
 const initialState = {
     data: []
-};
+}
 
 const Store = ({children}) => {
 
