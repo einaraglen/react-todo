@@ -2,6 +2,11 @@ import "./TodoItem.style.css";
 import proceed from "../../images/proceed.svg";
 import edit from "../../images/edit.svg";
 
+/**
+ * Component to display the informaion of a Todo-Item
+ * @param {Object} props  
+ * @returns 
+ */
 const ToodoItem = ({ info, handler }) => {
 
     const states = ["Todo", "Doing", "Done"];

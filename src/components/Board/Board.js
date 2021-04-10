@@ -1,7 +1,5 @@
 import React from "react";
 import Tooltip from '@material-ui/core/Tooltip';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 
 import "./Board.style.css";
 import ToodoItem from "../TodoItem/TodoItem";
@@ -19,8 +17,12 @@ const Board = () => {
     const [modalState, setModalState] = React.useState(true);
     const [currentItem, setCurrentItem] = React.useState({});
 
-    const [key, setKey] = React.useState("Work");
-
+    /**
+     * Method to proceed the todo-item to next state,
+     * works by mapping the datalist to the displatcher and editing the 
+     * todo-item collected by the info.
+     * @param {Object} info
+     */
     function proceed(info) {
         dispatch({type: "SET_DATA", payload: state.data.map((item) => {
             if (item.title === info.title) {
@@ -37,12 +39,25 @@ const Board = () => {
         });
     }
 
+    /**
+     * Method for opening edit modal with the information
+     * given from the item Object.
+     * @param {Object} item 
+     */
     function openEdit(item) {
        setIsOpen(true);
        setModalState(false);
        setCurrentItem(item);
     }
 
+    /**
+     * Method for rendering the different boards
+     * of the todo site, consists of:
+     * - Todo
+     * - In-Progress
+     * - Done
+     * @returns {DOM} boards
+     */
     function rendreBoards() {
         let states = [0, 1, 2];
         let classNames = ["first", "mid", "last"];
@@ -61,6 +76,13 @@ const Board = () => {
         );
     }
 
+    /**
+     * Method for rendering the items from the data list
+     * returns the items based on the state of the board
+     * 0 - 1 - 2
+     * @param {Number} currentState 
+     * @returns {DOM} Todo-Item
+     */
     function rendreItems(currentState) {
         return state.data
             .filter(item => item.state === currentState)
@@ -69,24 +91,19 @@ const Board = () => {
             }/>)
     } 
 
+    /**
+     * Method for setting the state of the modal to open
+     */
     function openModal() {
         setIsOpen(true);
     }
 
-    function handleChange(event) {
-        setKey(event.target.value);
-      }
-    
     return (
         <div className="board">
             <div className="board-header">
                 <Tooltip title="Add" placement="right">
                     <img src={add_icon} alt="add icon" onClick={openModal} />
                 </Tooltip>
-                <Select className="select" value={key} onChange={handleChange} disableUnderline>
-                    <MenuItem value="10">Work</MenuItem>
-                    <MenuItem value="20">Home</MenuItem>
-                </Select>
                 <BoardModal 
                     modalIsOpen={modalIsOpen}
                     setIsOpen={setIsOpen}

@@ -1,9 +1,13 @@
 import React, {createContext, useReducer} from "react";
 import Reducer from "./Reducer";
 
-//Kinda serializes your data, so that it persists between refreshes
-//Uses JSON parsing so we can get back the object list we sendt into it
-//And ofc we give it an empty array if no session data is found (this helps to not break absolutly erything)
+/**
+ * Kinda serializes your data, so that it persists between refreshes
+ * Uses JSON parsing so we can get back the object list we sendt into it
+ * And ofc we give it an empty array if no session data is found (this helps to not break absolutly erything)
+ * @param {String} localStorageKey 
+ * @returns 
+ */
 const useStateWithLocalStorage = (localStorageKey) => {
 
     const [data, setData] = React.useState(

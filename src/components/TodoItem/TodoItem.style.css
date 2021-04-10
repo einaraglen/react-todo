@@ -8,7 +8,7 @@
     padding: 0em .5vw 0em .5vw;
     display: grid;
     grid-template-columns: 75% 25%;
-    grid-template-rows: 3em auto 2em;
+    grid-template-rows: auto auto 2em;
     grid-template-areas: 
         "title status"
         "desc desc"
@@ -16,6 +16,7 @@
 }
 
 .title {
+    font-size: 1em;
     grid-area: title;
 }
 
@@ -76,4 +77,34 @@
 
 .edit-button:hover {
     filter: invert(80%);
+}
+
+@media only screen and (max-width: 500px) {
+    .title {
+        font-size: .6em;
+    }
+
+    .description {
+        font-size: .6em;
+    }
+
+    .status {
+        font-size: .5em;
+    }
+
+    .proceed-button {
+        width: 3em;
+    }
+    
+    .proceed-button p {
+        font-size: .6em;
+    }
+    
+    .tools img {
+        height: .6em;
+    }
+
+    .holder {
+        width: auto;
+    }
 }

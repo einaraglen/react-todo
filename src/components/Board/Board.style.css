@@ -9,14 +9,6 @@
         "todo doing done";
 }
 
-@media only screen and (max-width: 1200px) {
-    .board {
-        padding: 5em 0em 0em 4%;
-        grid-template-columns: 28% 28% 28%;
-        column-gap: 4%;
-    }
-  }
-
 .board-header {
     grid-area: header;
     height: 4em;
@@ -154,4 +146,18 @@
 .back:hover {
     background-color: #909497;
     color: #ECF0F1;
+}
+
+@media only screen and (max-width: 1200px) {
+    .board {
+        padding: 5em 0em 0em 4%;
+        grid-template-columns: 28% 28% 28%;
+        column-gap: 4%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .modal-content {
+       width: 80vw;
+    }
 }

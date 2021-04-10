@@ -9,7 +9,7 @@ import {
 
 import home from "./images/home.svg";
 import about from "./images/information.svg";
-import settings from "./images/gear.svg";
+//import settings from "./images/gear.svg";
 import Board from "./components/Board/Board";
 import About from "./components/About/About";
 
@@ -30,13 +30,15 @@ const App = () => {
                   <img src={about} alt="about icon" />
                 </div>
               </Link>
+              {/*
+              * For future use
               <Link className="link settings" to="/settings">
                 <div>
                   <p>Settings</p>
                   <img src={settings} alt="settings icon"/>
                 </div>
               </Link>
-              <input className="search-input" placeholder="Search" type="text"/>
+              <input className="search-input" placeholder="Search" type="text"/>*/}
       </div>
       <div className="main">
             <Switch>
