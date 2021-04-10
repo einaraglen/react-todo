@@ -69,8 +69,13 @@
     filter: invert(80%);
 }
 
-.edit-button {
+.edit-container {
     float: right;
+    height: 1.8em;
+    width: 1em;
+}
+
+.edit-button {
     cursor: pointer;
     margin-top: .2em;
 }

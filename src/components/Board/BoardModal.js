@@ -99,20 +99,32 @@ const BoardModal = ({ modalIsOpen , setIsOpen, modalState, setModalState, curren
 
     /**
      * Method for checking the input fields.
+     * As you can see i became quite paranoid after
+     * finding multible ways of breaking the site from the inputs
      * @returns {Boolean} if fields are good
      */
     function checkFields() {
-        if (!title.trim() || !description.trim()) {
-            setError("Empty field");
-        } else {
-            if(used(title) && title !== key) {
-                setError("Title unavailable");
-            } else {
-                return true;
+        if (title !== undefined && description !== undefined) {
+            if (!title.trim() || !description.trim()) {
+                setError("Empty field");
+                return false;
+            } 
+    
+            if (used(title)) {
+                if(modalState ) {
+                    setError("Title unavailable");
+                    return false; 
+                } else if (title !== key) {
+                    setError("Title unavailable");
+                    return false; 
+                }
             }
+    
+            return true;
+        } else {
+            setError("Empty field");
+            return false;
         }
-
-        return false;
     }
 
     /**
@@ -153,10 +165,8 @@ const BoardModal = ({ modalIsOpen , setIsOpen, modalState, setModalState, curren
     /**
      * Method for closing and resetting the modal
      */
-    function closeModal(){
+    function closeModal() {
         setError("");
-        setTitle("");
-        setDescription("");
         setIsOpen(false);
         setModalState(true);
     } 
@@ -170,8 +180,8 @@ const BoardModal = ({ modalIsOpen , setIsOpen, modalState, setModalState, curren
         >
             <div className="modal-content">
                 <p>{(modalState) ? "Add " : "Edit "}Task</p>
-                <input type="text" placeholder="Title" value={title} onChange={event => setTitle(event.target.value)} />
-                <textarea type="text" placeholder="Description" value={description} onChange={event => setDescription(event.target.value)} />
+                <input type="text" placeholder="Title" value={title || ""} onChange={event => setTitle(event.target.value)} />
+                <textarea type="text" placeholder="Description" value={description || ""} onChange={event => setDescription(event.target.value)} />
                 {
                     (modalState) ? null : (
                         <div>

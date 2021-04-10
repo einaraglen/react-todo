@@ -51,6 +51,14 @@ const Board = () => {
     }
 
     /**
+     * 
+     */
+    function openAdd() {
+        setIsOpen(true);
+        setCurrentItem({});
+    }
+
+    /**
      * Method for rendering the different boards
      * of the todo site, consists of:
      * - Todo
@@ -91,18 +99,11 @@ const Board = () => {
             }/>)
     } 
 
-    /**
-     * Method for setting the state of the modal to open
-     */
-    function openModal() {
-        setIsOpen(true);
-    }
-
     return (
         <div className="board">
             <div className="board-header">
                 <Tooltip title="Add" placement="right">
-                    <img src={add_icon} alt="add icon" onClick={openModal} />
+                    <img src={add_icon} alt="add icon" onClick={openAdd} />
                 </Tooltip>
                 <BoardModal 
                     modalIsOpen={modalIsOpen}
