@@ -7,13 +7,13 @@ This is a primitive way of serializing the user data in the browser.
 
 ### How-To :
 
-1. **Click** plus symbol **top-left** corner
+1. **Add** by clicking the plus symbol top-left corner
     - This will display the add-version of the modal
     - Here a title can be set together with a short description of the Task 
-    - After everything looks good the **Add** button can be pressed to creat the new Task
+    - After everything looks good the Add button can be pressed to creat the new Task
 
 2. **Proceed** Task to next state
-    - **Click** the double arrow at the bottom of the task to send into the next state of "done-ness"
+    - Click the double arrow at the bottom of the task to send into the next state
     - This all is persistant and will changes are saved in the browser
 
 3. **Editing** is done by clicking the pencil icon
@@ -24,16 +24,17 @@ This is a primitive way of serializing the user data in the browser.
 
 ----
 
-### Tools I used :
+### Tools used :
 
 ToolTips and RadioButtons are used from the **`material-ui`** library, a UI library i will continue to use.
  - [Material-UI](https://material-ui.com/)
 
- The about page is created by using the **`react-markdown`** library for reading mardown files into HTML.
+ The about page is created by using the **`react-markdown`** library for reading markdown files into HTML.
  - [Markdown Library](https://www.npmjs.com/package/react-markdown)
 
-For the modal i went with **`react-modal`**, i could have used Material-UI's modal, but i went with a more light weight one.
+For the modal i went with **`react-modal`**, I could have used Material-UI's modal, but i went with a more light weight one.
  - [Modal Library](https://www.npmjs.com/package/react-modal)
 
 All icons found on the site is from **Flaticon** and are free to use.
  - [flaticon.com](https://www.flaticon.com/)
+
