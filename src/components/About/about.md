@@ -29,6 +29,9 @@ This is a primitive way of serializing the user data in the browser.
 ToolTips and RadioButtons are used from the **`material-ui`** library, a UI library i will continue to use.
  - [Material-UI](https://material-ui.com/)
 
+ The page routing is done with **`react-router-dom`** library, switched between main and about page.
+ - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
+
  The about page is created by using the **`react-markdown`** library for reading markdown files into HTML.
  - [Markdown Library](https://www.npmjs.com/package/react-markdown)
 
